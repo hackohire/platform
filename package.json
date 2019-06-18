@@ -1,0 +1,26 @@
+{
+  "name": "platformapi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "config-example.js",
+  "scripts": {
+    "start": "sls offline start",
+    "deploy": "sls deploy",
+    "lint": "eslint ."
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-config-google": "^0.13.0",
+    "serverless": "^1.44.1",
+    "serverless-offline": "^5.3.2"
+  },
+  "dependencies": {
+    "apollo-server-lambda": "^2.6.2",
+    "graphql": "^14.3.1",
+    "jsonwebtoken": "^8.5.1",
+    "jwks-rsa": "^1.5.1",
+    "mongoose": "^5.5.14"
+  }
+}
