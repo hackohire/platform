@@ -1,10 +1,10 @@
 module.exports = {
   env: {
+    browser: true,
     commonjs: true,
     es6: true,
-    node: true,
   },
-  extends: 'google',
+  extends: 'airbnb-base',
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
@@ -13,9 +13,6 @@ module.exports = {
     ecmaVersion: 2018,
   },
   rules: {
-    'require-jsdoc': 'off',
-    'linebreak-style': 'off',
-    'prefer-promise-reject-errors': 'off',
-    'max-len': 'off',
+    indent: [2, 4]
   },
 };
