@@ -1,22 +1,22 @@
 const mongoose = require('mongoose');
-const {Schema} = mongoose;
+const { Schema } = mongoose;
 
 const userSchema = new Schema(
     {
-      firstName: String,
-      lastName: String,
-      email: String,
-      phone: String,
+        firstName: String,
+        lastName: String,
+        email: String,
+        phone: String,
     },
     {
-      timestamps: true,
-    }
+        timestamps: true,
+    },
 );
 
 module.exports = () => {
-  try {
-    return mongoose.model('user');
-  } catch (e) {
-    return mongoose.model('user', userSchema);
-  }
+    try {
+        return mongoose.model('user');
+    } catch (e) {
+        return mongoose.model('user', userSchema);
+    }
 };
