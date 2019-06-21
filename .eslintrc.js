@@ -13,6 +13,7 @@ module.exports = {
     ecmaVersion: 2018,
   },
   rules: {
-    indent: [2, 4]
+    indent: [2, 4],
+    "import/newline-after-import": false
   },
 };
