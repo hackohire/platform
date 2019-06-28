@@ -1,4 +1,4 @@
-const {getUsers, createUser} = require('./user');
+const {getUsers, createUser, updateUser} = require('./user');
 const { createApplication, getApplications, getApplicationById } = require('./application');
 
 module.exports = {
@@ -10,6 +10,7 @@ module.exports = {
   },
   Mutation: {
     createUser,
+    updateUser,
     createApplication
   },
 };

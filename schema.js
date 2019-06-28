@@ -12,6 +12,8 @@ type User {
   linkedin_url: String
   stackoverflow_url: String
   portfolio_links: [String]
+  location: String
+  currentJobDetails: CurrentJobDetails
 }
 
 input UserInput {
@@ -25,8 +27,21 @@ input UserInput {
   linkedin_url: String
   stackoverflow_url: String
   portfolio_links: [String]
+  location: String
+  currentJobDetails: CurrentJobDetailsInput
 }
 
+input CurrentJobDetailsInput {
+  jobProfile: String
+  companyName: String
+  companyLocation: String
+}
+
+type CurrentJobDetails {
+  jobProfile: String
+  companyName: String
+  companyLocation: String
+}
 
 type Application {
   _id: ID
@@ -48,15 +63,15 @@ type Query {
   hello: String
   getUsers(_page: Int, _limit: Int): [User!]!
   getSelectedUser(id: String): User!
-  getApplications: [Application]
+  getApplications(userId: String): [Application]
   getApplicationById(id: String): Application
   getUserApplications(userId: String): Application
 }
 
 type Mutation {
   createUser(user: UserInput!): User
-  updateUser(userInput: UserInput): [User]
-  createApplication(application: ApplicationInput): Application
+  updateUser(user: UserInput): User
+  createApplication(application: ApplicationInput): [Application]
 }
 `;
 

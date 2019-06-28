@@ -4,6 +4,7 @@ const typeDefs = require('./schema');
 const resolvers = require('./resolvers');
 
 const server = new ApolloServer({
+  cors: true,
   typeDefs,
   resolvers,
   context: ({event, context}) => ({
@@ -16,4 +17,11 @@ const server = new ApolloServer({
   playground: true,
 });
 
-module.exports.graphqlHandler = server.createHandler();
+// exports.graphql = server.createHandler();
+
+module.exports.graphqlHandler = server.createHandler({
+  cors: {
+    origin: '*',
+    credentials: true,
+  },
+});

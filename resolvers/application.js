@@ -16,9 +16,15 @@ async function createApplication(_, { application }, { headers }) {
             }
 
             const app = new Application(application);
-            await app.save(application).then(a => {
+            await app.save(application).then(async a => {
                 console.log(a)
-                return resolve(a);
+                await Application.find({createdBy: application.createdBy}, (err, apps) => {
+                    if(err) {
+                        return reject(err);
+                    }
+                    return resolve(apps);
+                })
+                return resolve([a]);
             });
 
             // await conn.close();
@@ -31,7 +37,7 @@ async function createApplication(_, { application }, { headers }) {
     });
 }
 
-async function getApplications(_, { headers }) {
+async function getApplications(_, { userId }, { headers }) {
     return new Promise(async (resolve, reject) => {
         try {
 
@@ -42,7 +48,7 @@ async function getApplications(_, { headers }) {
                 console.log('Using existing mongoose connection.');
             }
 
-            Application.find({}, (err, apps) => {
+            Application.find({createdBy: userId}, (err, apps) => {
                 if(err) {
                     return new Error(err);
                 }

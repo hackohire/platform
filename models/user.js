@@ -1,6 +1,15 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
+const currentJobDetails = new Schema(
+    {
+        jobProfile: String,
+        companyName: String,
+        companyLocation: String
+    }
+);
+
+
 const userSchema = new Schema(
     {
         firstName: String,
@@ -10,16 +19,21 @@ const userSchema = new Schema(
         email: String,
         email_verified: Boolean,
         phone: String,
-        programming_languages: Array,
+        programming_languages: { type: Array, default: [] },
         github_url: String,
         linkedin_url: String,
         stackoverflow_url: String,
         portfolio_links: Array,
+        location: String,
+        currentJobDetails: currentJobDetails
+
     },
     {
         timestamps: true,
     },
 );
+
+
 
 module.exports = () => {
     try {

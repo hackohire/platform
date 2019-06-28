@@ -40,17 +40,17 @@ async function createUser(_, { user }, { headers }) {
                 console.log('Using existing mongoose connection.');
             }
 
-            User.find({email: user.email}, (err, u) => {
+            User.findOne({email: user.email}, async (err, u) => {
                 if(err) {
                     return (err);
                 }
 
                 if(u) {
-                    return u;
+                    return resolve(u);
                 }
                 
-                const userToBeSaved = new User(user);
-                userToBeSaved.save(userToBeSaved).then(userCreated => {
+                const userToBeSaved = await new User(user);
+                await userToBeSaved.save(userToBeSaved).then(userCreated => {
                     console.log(userCreated)
                     return resolve(userCreated);
                 });
@@ -69,7 +69,7 @@ async function createUser(_, { user }, { headers }) {
     });
 }
 
-async function updateUser(_, userDetails, { headers }) {
+async function updateUser(_, { user }, { headers }) {
     return new Promise(async (resolve, reject) => {
         try {
             // await auth(headers);
@@ -81,12 +81,11 @@ async function updateUser(_, userDetails, { headers }) {
                 console.log('Using existing mongoose connection.');
             }
 
-            const dbo = conn.db('db');
-
-            dbo.collection('users').findOneAndUpdate({ _id: userDetails._id }, userDetails);
-
-            
-            return resolve(userDetails);
+            // const userToBeSaved = await new User(user);
+            await User.findByIdAndUpdate(user._id, user, {new:true}).then(userCreated => {
+                console.log(userCreated)
+                return resolve(userCreated);
+            });
         } catch (e) {
             console.log(e);
             return reject(e);
