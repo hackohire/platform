@@ -25,7 +25,8 @@ const userSchema = new Schema(
         stackoverflow_url: String,
         portfolio_links: Array,
         location: String,
-        currentJobDetails: currentJobDetails
+        currentJobDetails: currentJobDetails,
+        avatar: String,
 
     },
     {

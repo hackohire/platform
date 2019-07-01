@@ -14,6 +14,7 @@ type User {
   portfolio_links: [String]
   location: String
   currentJobDetails: CurrentJobDetails
+  avatar: String
 }
 
 input UserInput {
@@ -29,6 +30,7 @@ input UserInput {
   portfolio_links: [String]
   location: String
   currentJobDetails: CurrentJobDetailsInput
+  avatar: String
 }
 
 input CurrentJobDetailsInput {

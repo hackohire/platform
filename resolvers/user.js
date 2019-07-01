@@ -33,6 +33,7 @@ async function createUser(_, { user }, { headers }) {
     return new Promise(async (resolve, reject) => {
         try {
 
+            await auth.auth(headers);
             if (!conn) {
                 console.log('Creating new mongoose connection.');
                 conn = await db();
