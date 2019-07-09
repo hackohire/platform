@@ -10,10 +10,6 @@ const user_pool_id = 'us-east-1_B4xlOmGS0';
 
 const userPool_Id = `https://cognito-idp.${region}.amazonaws.com/${user_pool_id}`;
 
-// Set in `environment` of serverless.yml
-// const { AUTH0_CLIENT_ID } = process.env;
-// const { AUTH0_DOMAIN } = process.env;
-
 
 
 const pems = {}
