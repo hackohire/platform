@@ -27,10 +27,16 @@ const userSchema = new Schema(
         location: String,
         currentJobDetails: currentJobDetails,
         avatar: String,
+        roles: {
+            type: [String],
+            enum: ['Developer', 'Admin'],
+            default: ['Developer'],
 
+        }
     },
     {
         timestamps: true,
+        id: true
     },
 );
 

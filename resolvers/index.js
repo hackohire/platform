@@ -1,5 +1,5 @@
 const {getUsers, createUser, updateUser} = require('./user');
-const { createApplication, getApplications, getApplicationById } = require('./application');
+const { createApplication, getApplications, getApplicationById, updateApplication } = require('./application');
 
 module.exports = {
   Query: {
@@ -11,6 +11,7 @@ module.exports = {
   Mutation: {
     createUser,
     updateUser,
-    createApplication
+    createApplication,
+    updateApplication
   },
 };

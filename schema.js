@@ -15,6 +15,7 @@ type User {
   location: String
   currentJobDetails: CurrentJobDetails
   avatar: String
+  roles: [String]
 }
 
 input UserInput {
@@ -31,6 +32,12 @@ input UserInput {
   location: String
   currentJobDetails: CurrentJobDetailsInput
   avatar: String
+  roles: [String]
+}
+
+enum Roles {
+  Developer
+  Admin
 }
 
 input CurrentJobDetailsInput {
@@ -49,8 +56,13 @@ type Application {
   _id: ID
   name: String!
   description: String
-  appSecret: String,
+  appSecret: String
   createdBy: ID
+  uuid: String
+  apiKey: String
+  application_url: String
+  privacy_policy_url: String
+  status: ApplicationStatus
 }
 
 input ApplicationInput {
@@ -59,6 +71,22 @@ input ApplicationInput {
   description: String
   appSecret: String
   createdBy: ID
+  uuid: String
+  apiKey: String
+  application_url: String
+  privacy_policy_url: String
+  status: ApplicationStatus
+}
+
+enum ApplicationStatus {
+  Created
+  Submitted
+  Approved
+  Rejected
+  Archieved
+  Deleted
+  Published
+  Unpublished
 }
 
 type Query {
@@ -66,7 +94,7 @@ type Query {
   getUsers(_page: Int, _limit: Int): [User!]!
   getSelectedUser(id: String): User!
   getApplications(userId: String): [Application]
-  getApplicationById(id: String): Application
+  getApplicationById(appId: String): Application
   getUserApplications(userId: String): Application
 }
 
@@ -74,6 +102,7 @@ type Mutation {
   createUser(user: UserInput!): User
   updateUser(user: UserInput): User
   createApplication(application: ApplicationInput): [Application]
+  updateApplication(application: ApplicationInput): Application
 }
 `;
 
