@@ -4,11 +4,11 @@ const jwkToPem = require('jwk-to-pem');
 const jwt_set = require('../jwt_set.json');
 
 
-const region = 'us-east-1';
-const user_pool_id = 'us-east-1_B4xlOmGS0';
+const { AWS_COGNITO_REGION } = process.env;
+const { AWS_COGNITO_USERPOOL_ID } = process.env;
 
 
-const userPool_Id = `https://cognito-idp.${region}.amazonaws.com/${user_pool_id}`;
+const userPool_Id = `https://cognito-idp.${AWS_COGNITO_REGION}.amazonaws.com/${AWS_COGNITO_USERPOOL_ID}`;
 
 
 
