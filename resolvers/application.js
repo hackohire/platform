@@ -3,7 +3,7 @@ const auth = require('./../helpers/auth');
 const Application = require('./../models/application')();
 const uuidAPIKey = require('uuid-apikey');
 const helper = require('../helpers/helper');
-
+const sendEmail = require('../helpers/ses_sendTemplatedEmail');
 let conn;
 
 async function createApplication(_, { application }, { headers, db, decodedToken }) {
@@ -28,13 +28,25 @@ async function createApplication(_, { application }, { headers, db, decodedToken
                 await Application.find({ createdBy: application.createdBy }, (err, apps) => {
                     if (err) {
                         return reject(err);
+                    } else {
+                        const params = {...sendEmail.emailParams};
+                        params.Template = 'AppCreationNotificationToAdmin',
+                        params.Source = 'sumitvekariya7@gmail.com',
+                        params.Destination.ToAddresses = ['sumitvekariya7@gmail.com', 'sumi@dreamjobb.com'],
+                        params.TemplateData = JSON.stringify({
+                            'name': 'Sumit',
+                            'appName': application.name,
+                            'link': `${process.env.FRONT_END_URL}/#/application/applications/${a._id}`
+                        });
+                        sendEmail.sendTemplatedEmail(params);
+                        
                     }
                     return resolve(apps);
                 })
                 // return resolve([a]);
             });
 
-            // await db.disconnect();
+            await db.disconnect();
 
 
         } catch (e) {
@@ -86,10 +98,10 @@ async function getApplications(_, { userId }, { headers, db, decodedToken }) {
             }
 
             // console.log(headers)
-            const isUseAdmin= await helper.checkIfUserIsAdmin(decodedToken);
-            console.log(isUseAdmin);
+            const isUserAdmin= await helper.checkIfUserIsAdmin(decodedToken);
+            console.log('isUserAdmin', isUserAdmin);
 
-            if (isUseAdmin) {
+            if (isUserAdmin) {
                 await Application.find({}, (err, apps) => {
                     if (err) {
                         return new Error(err);
