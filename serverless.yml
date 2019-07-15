@@ -13,6 +13,7 @@ provider:
     AWS_SES_REGION: ${file(env.yml):${self:provider.stage}.AWS_SES_REGION}
     AWS_COGNITO_REGION: ${file(env.yml):${self:provider.stage}.AWS_COGNITO_REGION}
     AWS_COGNITO_USERPOOL_ID: ${file(env.yml):${self:provider.stage}.AWS_COGNITO_USERPOOL_ID}
+    AWS_COGNITO_CLIENT_ID: ${file(env.yml):${self:provider.stage}.AWS_COGNITO_CLIENT_ID}
     FRONT_END_URL: ${file(env.yml):${self:provider.stage}.FRONT_END_URL}
 
 functions:
@@ -27,6 +28,13 @@ functions:
       - http:
           path: graphql
           method: get
+          cors: true
+  hello:
+    handler: handler1.hello
+    events:
+      - http:
+          path: hello
+          method: GET
           cors: true
 
 resources:
@@ -53,18 +61,15 @@ resources:
           Ref: "ApiGatewayRestApi"
         StatusCode: "401"
 
-    # ApiGatewayAuthorizer:
-    #   DependsOn:
-    #     - ApiGatewayRestApi
-    #   Type: AWS::ApiGateway::Authorizer
-    #   Properties:
-    #     Name: cognito-authorizer
-    #     IdentitySource: method.request.header.Authorization
-    #     RestApiId:
-    #       Ref: ApiGatewayRestApi
-    #     Type: COGNITO_USER_POOLS
-    #     ProviderARNs:
-    #       - Fn::GetAtt: [CognitoUserPool, Arn]
-
 plugins:
   - serverless-offline
+  - serverless-domain-manager
+
+custom:
+  customDomain:
+    domainName: sarkazein7.tech
+    stage: prod
+    basePath: ''
+    certificateName: '*.sarkazein7.tech'
+    createRoute53Record: true
+    endpointType: 'regional'
