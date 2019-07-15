@@ -1,6 +1,6 @@
 const {getUsers, createUser, updateUser} = require('./user');
 const { createApplication, getApplications, getApplicationById, updateApplication } = require('./application');
-
+const { login, signup, confirmResgistration, resendConfirmationCode, changePassword, forgotPassword, confirmPassword } = require('./auth')
 module.exports = {
   Query: {
     hello: () => 'Hello world!',
@@ -12,6 +12,13 @@ module.exports = {
     createUser,
     updateUser,
     createApplication,
-    updateApplication
+    updateApplication,
+    login,
+    signup,
+    confirmResgistration,
+    resendConfirmationCode,
+    changePassword,
+    forgotPassword,
+    confirmPassword
   },
 };

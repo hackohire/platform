@@ -89,6 +89,13 @@ enum ApplicationStatus {
   Unpublished
 }
 
+type ResendConfirmationCode {
+  AttributeName: String
+  DeliveryMedium: String
+  Destination: String
+}
+
+
 type Query {
   hello: String
   getUsers(_page: Int, _limit: Int): [User!]!
@@ -102,7 +109,15 @@ type Mutation {
   createUser(user: UserInput!): User
   updateUser(user: UserInput): User
   createApplication(application: ApplicationInput): [Application]
-  updateApplication(application: ApplicationInput): Application
+  updateApplication(application: ApplicationInput, notifyAdmin: Boolean): Application
+
+  login(email: String, password: String): User
+  signup(email: String, password: String, name: String): String
+  confirmResgistration(email:String, code: String): String
+  resendConfirmationCode(email: String): ResendConfirmationCode
+  changePassword(email: String, oldPassword: String, newPassword: String): String
+  forgotPassword(email: String): String
+  confirmPassword(email: String, newPassword: String, verificationCode: String): String
 }
 `;
 
