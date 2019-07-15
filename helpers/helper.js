@@ -6,7 +6,7 @@ async function checkIfUserIsAdmin (decodedToken) {
             // console.log(res);
             if(err) reject(err);
             if (res && res['cognito:groups'] && res['cognito:groups'].length) {
-                console.log(res['cognito:groups'].indexOf('Admin'))
+                // console.log(res['cognito:groups'].indexOf('Admin'))
                 resolve(res['cognito:groups'].indexOf('Admin') > -1);
             }
         });

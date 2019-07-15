@@ -1,4 +1,4 @@
-// const db = require('./../helpers/db');
+const connectToMongoDB = require('./../helpers/db');
 const auth = require('./../helpers/auth');
 const User = require('./../models/user')();
 
@@ -13,7 +13,7 @@ async function getUsers(_, { _page = 1, _limit = 10 }, { headers, db, decodedTok
             console.log(db)
             if (!db) {
                 console.log('Creating new mongoose connection.');
-                // conn = await db();
+                conn = await connectToMongoDB();
             } else {
                 console.log('Using existing mongoose connection.');
             }
@@ -22,7 +22,7 @@ async function getUsers(_, { _page = 1, _limit = 10 }, { headers, db, decodedTok
                 .limit(_limit)
                 .skip((_page - 1) * _limit);
 
-            await db.disconnect();
+            // await db.disconnect();
             return resolve(users);
             
         } catch (e) {
@@ -43,7 +43,7 @@ async function createUser(_, { user }, { headers, db, decodedToken }) {
             // const decodedToken = await auth.auth(headers);
             if (!db) {
                 console.log('Creating new mongoose connection.');
-                // conn = await db();
+                conn = await connectToMongoDB();
             } else {
                 console.log('Using existing mongoose connection.');
             }
@@ -60,7 +60,7 @@ async function createUser(_, { user }, { headers, db, decodedToken }) {
                     return resolve(u);
                 }
 
-            await db.disconnect();
+            // await db.disconnect();
                 
             });
             
@@ -78,7 +78,7 @@ async function updateUser(_, { user }, { headers, db }) {
 
             if (!db) {
                 console.log('Creating new mongoose connection.');
-                // conn = await db();
+                conn = await connectToMongoDB();
             } else {
                 console.log('Using existing mongoose connection.');
             }
@@ -89,7 +89,7 @@ async function updateUser(_, { user }, { headers, db }) {
                 return resolve(userCreated);
             });
 
-            await db.disconnect();
+            // await db.disconnect();
         } catch (e) {
             console.log(e);
             return reject(e);

@@ -3,6 +3,7 @@ const auth = require('./../helpers/auth');
 const Application = require('./../models/application')();
 const uuidAPIKey = require('uuid-apikey');
 const helper = require('../helpers/helper');
+const connectToMongoDB = require('../helpers/db');
 const sendEmail = require('../helpers/ses_sendTemplatedEmail');
 let conn;
 
@@ -12,7 +13,7 @@ async function createApplication(_, { application }, { headers, db, decodedToken
 
             if (!db) {
                 console.log('Creating new mongoose connection.');
-                // conn = await db();
+                conn = await connectToMongoDB();
             } else {
                 console.log('Using existing mongoose connection.');
             }
@@ -32,21 +33,21 @@ async function createApplication(_, { application }, { headers, db, decodedToken
                         const params = {...sendEmail.emailParams};
                         params.Template = 'AppCreationNotificationToAdmin',
                         params.Source = 'sumitvekariya7@gmail.com',
-                        params.Destination.ToAddresses = ['sumitvekariya7@gmail.com', 'sumi@dreamjobb.com'],
+                        params.Destination.ToAddresses = ['sumitvekariya7@gmail.com'],
                         params.TemplateData = JSON.stringify({
                             'name': 'Sumit',
                             'appName': application.name,
                             'link': `${process.env.FRONT_END_URL}/#/application/applications/${a._id}`
                         });
                         sendEmail.sendTemplatedEmail(params);
-                        
+                        // db.disconnect();
                     }
                     return resolve(apps);
+                    
                 })
                 // return resolve([a]);
+                
             });
-
-            await db.disconnect();
 
 
         } catch (e) {
@@ -57,13 +58,13 @@ async function createApplication(_, { application }, { headers, db, decodedToken
 }
 
 
-async function updateApplication(_, { application }, { headers, db }) {
+async function updateApplication(_, { application, notifyAdmin }, { headers, db }) {
     return new Promise(async (resolve, reject) => {
         try {
 
             if (!db) {
                 console.log('Creating new mongoose connection.');
-                // conn = await db();
+                conn = await db();
             } else {
                 console.log('Using existing mongoose connection.');
             }
@@ -72,6 +73,10 @@ async function updateApplication(_, { application }, { headers, db }) {
             await Application.findByIdAndUpdate(application._id, application, {new:true}, (err, app) => {
                 if (err) {
                     return reject(err);
+                }
+                console.log(notifyAdmin);
+                if (notifyAdmin) {
+                    
                 }
                 return resolve(app);
             })
@@ -92,14 +97,14 @@ async function getApplications(_, { userId }, { headers, db, decodedToken }) {
 
             if (!db) {
                 console.log('Creating new mongoose connection.');
-                // conn = await db();
+                conn = await connectToMongoDB();
             } else {
                 console.log('Using existing mongoose connection.');
             }
 
             // console.log(headers)
             const isUserAdmin= await helper.checkIfUserIsAdmin(decodedToken);
-            console.log('isUserAdmin', isUserAdmin);
+            // console.log('isUserAdmin', isUserAdmin);
 
             if (isUserAdmin) {
                 await Application.find({}, (err, apps) => {
@@ -117,9 +122,9 @@ async function getApplications(_, { userId }, { headers, db, decodedToken }) {
                 })
             }
 
-            await db.disconnect(() =>  {
-                console.log('DB CONNECTION CLOSED')
-            });
+            // await db.disconnect(() =>  {
+            //     console.log('DB CONNECTION CLOSED')
+            // });
 
 
         } catch (e) {
@@ -135,7 +140,7 @@ async function getApplicationById(_, { appId }, { headers, db }) {
 
             if (!db) {
                 console.log('Creating new mongoose connection.');
-                // conn = await db();
+                conn = await connectToMongoDB();
             } else {
                 console.log('Using existing mongoose connection.');
             }
@@ -164,7 +169,7 @@ async function getUserApplications(_, { userId }, { headers, db }) {
 
             if (!db) {
                 console.log('Creating new mongoose connection.');
-                // conn = await db();
+                conn = await connectToMongoDB();
             } else {
                 console.log('Using existing mongoose connection.');
             }
@@ -177,7 +182,7 @@ async function getUserApplications(_, { userId }, { headers, db }) {
                 return resolve(apps);
             });
 
-            // await db.disconnect();
+            // // await db.disconnect();
 
 
         } catch (e) {
