@@ -16,6 +16,7 @@ type User {
   currentJobDetails: CurrentJobDetails
   avatar: String
   roles: [String]
+  applications: [Application]
 }
 
 input UserInput {
@@ -33,6 +34,7 @@ input UserInput {
   currentJobDetails: CurrentJobDetailsInput
   avatar: String
   roles: [String]
+  applications: [ApplicationInput]
 }
 
 enum Roles {
@@ -118,6 +120,8 @@ type Mutation {
   changePassword(email: String, oldPassword: String, newPassword: String): String
   forgotPassword(email: String): String
   confirmPassword(email: String, newPassword: String, verificationCode: String): String
+
+  authorize(applicationId: String): User
 }
 `;
 
