@@ -10,12 +10,13 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   context: async ({event, context}) => ({
+    callbackWaitsForEmptyEventLoop: false,
     headers: event.headers,
     functionName: context.functionName,
     event,
     context,
-    decodedToken: auth.auth(event.headers),
-    db: await connectToMongoDB() 
+    decodedToken: event.headers.Authorization ? await auth.auth(event.headers) : '',
+    db: await connectToMongoDB()
   }),
   introspection: true,
   playground: true,
@@ -26,4 +27,4 @@ module.exports.graphqlHandler = server.createHandler({
     origin: '*',
     credentials: true,
   },
-}, );
+});
