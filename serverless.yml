@@ -63,13 +63,13 @@ resources:
 
 plugins:
   - serverless-offline
-  - serverless-domain-manager
+#   - serverless-domain-manager
 
-custom:
-  customDomain:
-    domainName: sarkazein7.tech
-    stage: prod
-    basePath: ''
-    certificateName: '*.sarkazein7.tech'
-    createRoute53Record: true
-    endpointType: 'regional'
+# custom:
+#   customDomain:
+#     domainName: sarkazein7.tech
+#     stage: prod
+#     basePath: ''
+#     certificateName: '*.sarkazein7.tech'
+#     createRoute53Record: true
+#     endpointType: 'regional'
