@@ -20,6 +20,7 @@ const userSchema = new Schema(
         email_verified: Boolean,
         phone: String,
         programming_languages: { type: Array, default: [] },
+        applications: [{type: Schema.Types.ObjectId, ref: 'Application'}],
         github_url: String,
         linkedin_url: String,
         stackoverflow_url: String,
@@ -29,8 +30,8 @@ const userSchema = new Schema(
         avatar: String,
         roles: {
             type: [String],
-            enum: ['Developer', 'Admin'],
-            default: ['Developer'],
+            enum: ['Developer', 'Admin', 'User'],
+            default: ['User'],
 
         }
     },
