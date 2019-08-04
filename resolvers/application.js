@@ -75,9 +75,9 @@ async function updateApplication(_, { application, notifyAdmin }, { headers, db 
                     return reject(err);
                 }
                 console.log(notifyAdmin);
-                if (notifyAdmin) {
+                // if (notifyAdmin) {
                     
-                }
+                // }
                 return resolve(app);
             })
 
