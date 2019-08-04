@@ -24,10 +24,31 @@
 //     }
 // });
 
+// "use strict";
+// const MongoClient = require('mongodb').MongoClient;
+// const MONGODB_URI = process.env.MONGODB_URL; // or Atlas connection string
+
+// let cachedDb = null;
+
+// function connectToDatabase () {
+//   console.log('=> connect to database');
+
+//   if (cachedDb) {
+//     console.log('=> using cached database instance');
+//     return Promise.resolve(cachedDb);
+//   }
+
+//   return MongoClient.connect(MONGODB_URI)
+//     .then(db => {
+//       cachedDb = db;
+//       return cachedDb;
+//     });
+// }
+
 const mongoose = require('mongoose');
 const bluebird = require('bluebird');
 mongoose.Promise = bluebird;
-mongoose.Promise = global.Promise;
+// mongoose.Promise = global.Promise;
 
 // Only reconnect if needed. State is saved and outlives a handler invocation 
 let isConnected;
@@ -40,7 +61,16 @@ const connectToDatabase = async () => {
     }
   
     console.log('Creating new database connection');
-    await mongoose.connect(process.env.MONGODB_URL)
+    await mongoose.connect(process.env.MONGODB_URL, {
+            // poolSize: 20,
+            socketTimeoutMS: 480000,
+            keepAlive: 300000,
+        
+            keepAliveInitialDelay : 300000,
+            connectTimeoutMS: 30000,
+            reconnectTries: Number.MAX_VALUE,
+            reconnectInterval: 1000,
+    })
       .then(db => {
         isConnected = db.connections[0].readyState;
       }).catch((e) => Promise.reject(e))
