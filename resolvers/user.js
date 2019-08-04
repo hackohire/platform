@@ -35,11 +35,11 @@ async function getUsers(_, { _page = 1, _limit = 10 }, { headers, db, decodedTok
 async function createUser(_, { user }, { headers, db, decodedToken }) {
     return new Promise(async (resolve, reject) => {
         try {
-            let decodeToken;
-            await decodedToken.then((res, err) => {
-                console.log(res);
-               decodeToken = res; 
-            })
+            // let decodeToken;
+            // await decodedToken.then((res, err) => {
+            //     console.log(res);
+            //    decodeToken = res; 
+            // })
             // const decodedToken = await auth.auth(headers);
             if (!db) {
                 console.log('Creating new mongoose connection.');
