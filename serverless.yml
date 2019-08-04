@@ -1,41 +1,25 @@
-service: platformapi
+service: lilium
+
+plugins:
+  - serverless-webpack
+  - serverless-offline
 
 provider:
   name: aws
   runtime: nodejs8.10
-  region: ap-south-1
-  stage: prod
-  environment:
-    MONGODB_URL: ${file(env.yml):${self:provider.stage}.MONGODB_URL}
-    MONGODB_DBNAME: ${file(env.yml):${self:provider.stage}.MONGODB_DBNAME}
-    AWS_ACCESSKEY_ID: ${file(env.yml):${self:provider.stage}.AWS_ACCESSKEY_ID}
-    AWS_SECRETKEY: ${file(env.yml):${self:provider.stage}.AWS_SECRETKEY}
-    AWS_SES_REGION: ${file(env.yml):${self:provider.stage}.AWS_SES_REGION}
-    AWS_COGNITO_REGION: ${file(env.yml):${self:provider.stage}.AWS_COGNITO_REGION}
-    AWS_COGNITO_USERPOOL_ID: ${file(env.yml):${self:provider.stage}.AWS_COGNITO_USERPOOL_ID}
-    AWS_COGNITO_CLIENT_ID: ${file(env.yml):${self:provider.stage}.AWS_COGNITO_CLIENT_ID}
-    FRONT_END_URL: ${file(env.yml):${self:provider.stage}.FRONT_END_URL}
+  region: us-east-1
+  usagePlans:
+    throttle:
+      burstLimit: 50
+      rateLimit: 80
 
-functions:
-  graphql:
-    handler: handler.graphqlHandler
-    # role: ServiceRole
-    events:
-      - http:
-          path: graphql
-          method: post
-          cors: true
-      - http:
-          path: graphql
-          method: get
-          cors: true
-  hello:
-    handler: handler1.hello
-    events:
-      - http:
-          path: hello
-          method: GET
-          cors: true
+custom:
+  webpack:
+    webpackConfig: ./webpack.config.js
+    includeModules: true
+
+  serverless-offline:
+    port: 3300
 
 resources:
   Resources:
@@ -61,15 +45,35 @@ resources:
           Ref: "ApiGatewayRestApi"
         StatusCode: "401"
 
-plugins:
-  - serverless-offline
-#   - serverless-domain-manager
+functions:
 
-# custom:
-#   customDomain:
-#     domainName: sarkazein7.tech
-#     stage: prod
-#     basePath: ''
-#     certificateName: '*.sarkazein7.tech'
-#     createRoute53Record: true
-#     endpointType: 'regional'
+  graphql:
+    handler: src/function-handlers/graphql.handle
+    # role: ServiceRole
+    events:
+      - http:
+          path: graphql
+          method: post
+          cors: true
+          integration: lambda-proxy
+      - http:
+          path: graphql
+          method: get
+          cors: true
+          integration: lambda-proxy
+
+
+  # GraphQLPost:
+  #   handler: src/function-handlers/graphql.handle
+  #   events:
+  #   - http:
+  #       path: /graphql
+  #       method: post
+  #       cors: true
+  # GraphQLPlayground:
+  #   handler: src/function-handlers/graphql.handle
+  #   events:
+  #   - http:
+  #       path: /graphql
+  #       method: get
+  #       cors: true

@@ -1,8 +1,32 @@
-# package directories
-node_modules
-jspm_packages
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
-# Serverless directories
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage
+
+# Dependency directories
+node_modules/
+
+# dotenv environment variables file
+.env
+
+# Serverless framework
 .serverless
+.webpack
 
-env.yml
+# OS
+.DS_Store
+.tmp
+
+# Jest enviriorment
+globalConfig.json

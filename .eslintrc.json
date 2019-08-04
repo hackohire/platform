@@ -1,19 +1,21 @@
 {
-    "env": {
-        "browser": true,
-        "commonjs": true,
-        "es6": true
-    },
-    "extends": "eslint:recommended",
-    "globals": {
-        "Atomics": "readonly",
-        "SharedArrayBuffer": "readonly"
-    },
-    "parserOptions": {
-        "ecmaVersion": 2018
-    },
-    "rules": {
-        "no-console": 0,
-        "no-unused-vars": "warn"
-    }
+  "extends": "airbnb",
+  "rules": {
+    "semi": [2, "never"],
+    "import/extensions": ["always"],
+    "import/no-unresolved": ["always"],
+    "react/jsx-filename-extension": ["never"],
+    "import/prefer-default-export": ["never"],
+    "import/no-extraneous-dependencies": ["error", {"devDependencies": ["**/*.test.js", "**/factory.js", "**/*environment.js"]}],
+    "no-underscore-dangle": "off",
+    "no-else-return": "off",
+    "no-param-reassign": ["error", { "props": false }],
+    "react/no-unused-prop-types": [1, "always"],
+    "max-len": [0, "never"]
+  },
+  "env": {
+    "jest/globals": true,
+    "browser": true
+  },
+  "plugins": ["jest"]
 }

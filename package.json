@@ -1,33 +1,77 @@
 {
-  "name": "platformapi",
-  "version": "1.0.0",
-  "description": "",
-  "main": "env-example.yml",
-  "scripts": {
-    "start": "sls offline start",
-    "debug": "SET SLS_DEBUG=* && node --inspect %USERPROFILE%\\AppData\\Roaming\\npm\\node_modules\\serverless\\bin\\serverless offline -s dev",
-    "deploy": "sls deploy",
-    "lint": "eslint ."
+  "name": "lilium",
+  "version": "0.1.0",
+  "description": "⚜️ The Serverless GraphQL + MongoDB Boilerplate for all things internet.",
+  "keywords": [
+    "serverless",
+    "lambda",
+    "graphql-server",
+    "boilerplate",
+    "mongodb",
+    "mongodb-transaction"
+  ],
+  "homepage": "https://github.com/flpStrri/Lilium#readme",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flpStrri/Lilium.git"
   },
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "eslint": "^5.16.0",
-    "serverless": "^1.44.1",
-    "serverless-domain-manager": "^3.2.6",
-    "serverless-offline": "^5.3.2"
+  "main": "src/handler.js",
+  "scripts": {
+    "start": "serverless offline",
+    "test": "jest --coverage --detectOpenHandles",
+    "debug": "SET SLS_DEBUG=* && node --inspect %USERPROFILE%\\AppData\\Roaming\\npm\\node_modules\\serverless\\bin\\serverless offline"
   },
   "dependencies": {
-    "amazon-cognito-identity-js": "^3.0.13",
+    "amazon-cognito-identity-js": "^3.0.14",
+    "apollo-server": "^2.7.0",
     "apollo-server-lambda": "^2.6.2",
-    "aws-sdk": "^2.489.0",
-    "bluebird": "^3.5.5",
+    "aws-sdk": "^2.496.0",
+    "dataloader": "^1.4.0",
+    "dotenv-webpack": "^1.5.7",
     "graphql": "^14.3.1",
+    "graphql-tools": "^4.0.5",
     "jsonwebtoken": "^8.5.1",
-    "jwk-to-pem": "^2.0.1",
-    "jwks-rsa": "^1.5.1",
-    "lodash": "^4.17.14",
-    "mongoose": "^5.5.14",
-    "uuid-apikey": "^1.4.3"
-  }
+    "jwk-to-pem": "^2.0.0",
+    "merge-graphql-schemas": "^1.5.7",
+    "mongodb": "^3.1.6",
+    "node-fetch": "^2.6.0",
+    "npm": "^6.10.1",
+    "ramda": "^0.26.1",
+    "serverless-webpack": "^5.3.1",
+    "structure": "^1.5.0",
+    "uuid": "^3.3.2",
+    "webpack": "^4.36.1",
+    "webpack-node-externals": "^1.7.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.5.5",
+    "@babel/node": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/runtime": "^7.5.5",
+    "babel-core": "6.26.3",
+    "babel-jest": "^24.8.0",
+    "babel-loader": "^8.0.6",
+    "casual": "^1.5.19",
+    "codecov": "^3.5.0",
+    "enhanced-resolve": "^4.1.0",
+    "eslint": "^6.0.1",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jest": "^21.24.1",
+    "eslint-plugin-jsx-a11y": "^6.1.2",
+    "eslint-plugin-react": "^7.11.1",
+    "jest": "^23.6.0",
+    "jest-create-mock-instance": "^1.1.0",
+    "jest-environment-node": "^24.8.0",
+    "jest-fetch-mock": "^2.1.2",
+    "mongodb-memory-server-core": "5.1.5",
+    "serverless": "^1.48.2",
+    "serverless-offline": "^5.8.0",
+    "mongoose": "^5.5.14"
+  },
+  "bugs": {
+    "url": "https://github.com/flpStrri/Lilium/issues"
+  },
+  "author": "João Filipe Storarri"
 }
