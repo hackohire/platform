@@ -1,10 +1,12 @@
 const connectToMongoDB = require('./../helpers/db');
+var ObjectID = require("mongodb").ObjectID;
 // const CognitoIdentityServiceProvider = require('aws-sdk');
 global.fetch = require('node-fetch');
 const AmazonCognitoIdentity = require('amazon-cognito-identity-js');
 var { CognitoUser } = require('amazon-cognito-identity-js');
 const auth = require('./../helpers/auth');
 const User = require('./../models/user')();
+var array = require('lodash/array');
 
 const { AWS_COGNITO_USERPOOL_ID } = process.env;
 const { AWS_COGNITO_CLIENT_ID } = process.env;
@@ -231,6 +233,78 @@ async function confirmPassword(_, { email, newPassword, verificationCode }, { db
 }
 
 
+// Authorize a user from other applications being developed within the platform for e.g. codemarket
+
+async function authorize(_, { applicationId }, { headers, db, decodedToken }) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let user = {
+                'email': decodedToken.email,
+                'name': decodedToken.name,
+                'roles': ['User'],
+                'applications': [applicationId]
+            }
+
+            // const decodedToken = await auth.auth(headers);
+            if (!db) {
+                console.log('Creating new mongoose connection.');
+                conn = await connectToMongoDB();
+            } else {
+                console.log('Using existing mongoose connection.');
+            }
+
+
+            // let options = { upsert: true, new: true, setDefaultsOnInsert: true, useFindAndModify: false };
+
+            await User.findOne({email: user.email}, (err, res) => {
+                if(err) {
+                    reject(err);
+                }
+
+                if(res) {
+                    // console.log(res.applications);
+                    res.name = user.name;
+                    res.roles = array.union(user.roles, res.roles);
+                    res.email = user.email;
+                    res.applications = array.union([applicationId], res.applications.map(x => x.toString()));
+                    res.save(res, (err, res) => {
+                        if(err) reject(err);
+
+                        if(res) {
+                            resolve(res); 
+                        }
+                    })
+                } else {
+                    user = new User(user);
+                    user.save(user).then(u => {
+                        if(u) {
+                            resolve(u);
+                        }
+                    })
+                }
+            })
+            
+            // await User.findOneAndUpdate({email: user.email}, {$set: {}}, options, async (err, u) => {
+            //     if(err) {
+            //         return (err);
+            //     }
+
+            //     if(u) {
+            //         return resolve(u);
+            //     }
+
+            // // await db.disconnect();
+                
+            // });
+            
+        } catch (e) {
+            console.log(e);
+            return reject(e);
+        }
+    });
+}
+
+
 
 module.exports = {
     login,
@@ -239,5 +313,7 @@ module.exports = {
     resendConfirmationCode,
     changePassword,
     forgotPassword,
-    confirmPassword
+    confirmPassword,
+
+    authorize
 };
